@@ -1,0 +1,22 @@
+---
+- name: install apache and start the service
+  hosts: linux_hosts
+  become: true
+  gather_facts: false
+  vars:
+    - package_name: httpd
+  tasks:
+    - name: install apache
+      yum:
+        name: "{{ package_name }}"
+        state: latest
+      notify:
+        - enable and start service
+
+  handlers:
+
+    - name: enable and start the service
+      service:
+        name: "{{ package_name }}"
+        enabled: true
+        state: started
